@@ -1,0 +1,34 @@
+{
+  "rang": {
+    "name": "ранг",
+    "value": ""
+  },
+  "rangtft": {
+    "name": "рангтфт",
+    "value": ""
+  },
+  "opgg": {
+    "name": "opgg",
+    "value": "Основа: https://euw.op.gg/summoner/userName=Dimil%20Q Смурф: https://euw.op.gg/summoner/userName=RESET%20MMR%20DIMIL"
+  },
+  "chatLeave": {
+    "name": "сейчасприду",
+    "value": ""
+  },
+  "telega": {
+    "name": "телега",
+    "value": ""
+  },
+  "banan": {
+    "name": "банан",
+    "value": ""
+  },
+  "inst": {
+    "name": "инстаграм",
+    "value": "https://www.instagram.com/dimill322/"
+  },
+  "dev": {
+    "name": "девайсы",
+    "value": "Наушники - Logitech G935, Мышь Logitech - G403 HERO, Микрофон - HyperX QuadCastTM"
+  }
+}
