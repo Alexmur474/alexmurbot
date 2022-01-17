@@ -2,8 +2,12 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const tmi = require("tmi.js");
 const mongoose = require('mongoose')
-const command_list = require('./command_list.json');
+
 const { declOfNum } = require('./my_modules/declOfNum');
+
+require('./src/db/mongoose')
+const Counter = require('./src/models/counters')
+const Command = require('./src/models/command')
 
 //____________________________________________
 
@@ -29,34 +33,6 @@ client.connect();
 
 //____________________________________________
 
-const db = 'mongodb+srv://alexmur474:alex-c00l@cluster0.krewu.mongodb.net/twitch-bot?retryWrites=true&w=majority'
-
-mongoose
-.connect(db, {
-    useNewUrlParser: true, 
-    useUnifiedTopology:true,
-    autoIndex: true,
-    connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
-    socketTimeoutMS: 45000,})
-.then((res) => console.log('Connected to DB'))
-.catch((error) => console.log(error))
-
-//? models
-const Command = mongoose.model('Command', {
-    command: String,
-    value: String,
-    help: String
-    }
-);
-
-const Counter = mongoose.model('Counter', {
-    counter: String,
-    value: Number,
-    help: String
-});
-
-//____________________________________________
-
 //?add command
 client.on('message', (channel, tags, message, self) => {
     if (self) return;
@@ -68,19 +44,19 @@ client.on('message', (channel, tags, message, self) => {
 
             Command.findOne({command: name},(err, data) => {
                 if(err){console.log(err)}
-
+                console.log(data)
                 if(data){
                     Command.updateOne({command: name}, {value: value}, (err,data)=> {
                         if(err) console.log(err);
                         client.say(channel, `Команда !${name} успешно обновлена`)
                     })
                 }else{
-                    Command.create({command: name, value: value, help: 'help не найден/не записан'},function(err, doc){
+                    Command.create({command: name, value: value},function(err, doc){
                         if(err) return console.log(err);
                         client.say(channel, `Команда !${name} успешно добавлена`)
                     })
                 }
-            })
+            }) 
         }
     }
 })
@@ -112,49 +88,32 @@ client.on('message', (channel, tags, message, self) => {
     if (self || !message.startsWith('!')) return;
 
     const command = message.toLowerCase().slice(1);
+    Command.findOne({command: command},(err, data) => {
+        if(err){console.log(err)}
 
-    for (var a in command_list) {
-        let b = command_list[a]
-
-        if (command == b.name && b.value.length) {
-            client.say(channel, `${b.value}`);
+        if(data){
+            client.say(channel, data.value) 
         }
-    }
+    }) 
 });
 
 //? command list
-/*
-//счетчики
-Counter.find({}).exec(function(err, data) {
-    let arr = []
-    for (i = 0; i< data.length; i++){
-        arr.push(data[i].counter)
-    }
-    console.log(arr.join(', ')) 
-})
-
-Command.find({}).exec(function(err, data) {
-    let arr = []
-    for (i = 0; i< data.length; i++){
-        arr.push(data[i].counter)
-    }
-    console.log(arr.join(', ')) 
-})
-*/
-
+const arr = []
 client.on('message', (channel, tags, message, self) => {
     if (self) return;
 
     if (message == "!команды") {
-
-        let arr = []
-
-        for (var a in command_list) {
-            let b = command_list[a]
-            arr.push(b.name);
-        }
-
-        client.say(channel, "command list: " + arr.join(", "))
+        Counter.find({}).exec(function(err, data) {
+            for (i = 0; i< data.length; i++){
+                arr.push(data[i].counter)
+            }
+            Command.find({}).exec(function(err, data) {
+                for (i = 0; i< data.length; i++){
+                    arr.push(data[i].command)
+                }
+                client.say(channel, "command list: " + arr.join(", "))
+            })
+        })
     }
 })
 
