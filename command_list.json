@@ -26,6 +26,10 @@
   "inst": {
     "name": "инстаграм",
     "value": "https://www.instagram.com/dimill322/"
+  },  
+  "ochki": {
+    "name": "очки",
+    "value": "https://clips.twitch.tv/FastDeterminedEggDansGame-YVwC_GjPlg1T4cTM"
   },
   "dev": {
     "name": "девайсы",
