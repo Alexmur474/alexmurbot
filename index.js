@@ -43,7 +43,6 @@ client.on('message', (channel, tags, message, self) => {
 
             Command.findOne({command: name},(err, data) => {
                 if(err){console.log(err)}
-                console.log(data)
                 if(data){
                     Command.updateOne({command: name}, {value: value}, (err,data)=> {
                         if(err) console.log(err);
