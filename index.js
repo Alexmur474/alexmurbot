@@ -1,7 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const tmi = require("tmi.js");
-const mongoose = require('mongoose')
 
 const { declOfNum } = require('./my_modules/declOfNum');
 
