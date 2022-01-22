@@ -6,7 +6,8 @@ const { declOfNum } = require('./my_modules/declOfNum');
 
 require('./src/db/mongoose')
 const Counter = require('./src/models/counters')
-const Command = require('./src/models/command')
+const Command = require('./src/models/command');
+const { formTags } = require('tmi.js/lib/parser');
 
 //____________________________________________
 
@@ -229,6 +230,21 @@ client.on('message', (channel, tags, message, self) => {
 client.on('message', (channel, tags, message, self) => {
     if (self) return;
     if (message.startsWith("!test")) {
-        
+        console.log(tags['user-id'])
     }
 }) 
+
+client.on('message', (channel, tags, message, self) => {
+    if (self) return;
+
+}) 
+
+client.on('subgift', (channel,tags,streak,recipient) =>{
+    console.log(channel,tags,streak,recipient)
+})
+client.on('submysterygift', (channel,tags,streak,recipient) =>{
+    console.log(channel,tags,streak,recipient)
+})
+client.on('subscription',(channel, tags, message, self)=>{
+    console.log(channel, tags, message, self)
+})
