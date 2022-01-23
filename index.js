@@ -7,7 +7,6 @@ const { declOfNum } = require('./my_modules/declOfNum');
 require('./src/db/mongoose')
 const Counter = require('./src/models/counters')
 const Command = require('./src/models/command');
-const { formTags } = require('tmi.js/lib/parser');
 
 //____________________________________________
 
@@ -136,7 +135,7 @@ client.on('message', (channel, tags, message, self) => {
 
             switch (command) {
                 case 'телега':
-                client.say(channel, `Димил пропустил ${anyVal} ${declOfNum(anyVal, ['телегу', 'телеги', 'телег'])}. Список телег пополнился еще одной.`);
+                    client.say(channel, `Димил пропустил ${anyVal} ${declOfNum(anyVal, ['телегу', 'телеги', 'телег'])}. Список телег пополнился еще одной.`);
                     break;
                 case 'сейчасприду':
                     client.say(channel, `Димил оставил чат в одиночестве: ${anyVal} ${declOfNum(anyVal, ['раз', 'раза', 'раз'])}. sadCat `);
