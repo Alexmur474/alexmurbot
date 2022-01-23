@@ -234,17 +234,83 @@ client.on('message', (channel, tags, message, self) => {
     }
 }) 
 
-client.on('message', (channel, tags, message, self) => {
-    if (self) return;
-
-}) 
-
-client.on('subgift', (channel,tags,streak,recipient) =>{
-    console.log(channel,tags,streak,recipient)
+client.on('subscription',(channel, username, methods, message, tags) => {
+    let str = `subscription: ${username}, ${methods.plan}, ${message}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
 })
-client.on('submysterygift', (channel,tags,streak,recipient) =>{
-    console.log(channel,tags,streak,recipient)
+
+client.on('submysterygift', (channel, username, numbOfSubs, methods, tags) =>{
+    let str = `submysterygift: ${username}, ${numbOfSubs}, ${methods.plan} , ${JSON.stringify(tags)}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
 })
-client.on('subscription',(channel, tags, message, self)=>{
-    console.log(channel, tags, message, self)
+
+client.on('subgift', (channel, username, streakMonths, recipient, methods, tags) => {
+    let str = `subgift: ${username}, ${streakMonths}, ${recipient}, ${methods.plan}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
+})
+
+client.on('resub', (channel, username, streakMonths, message, tags, methods)=>{
+    let str = `resub: ${username}, ${streakMonths}, ${message}, ${methods.plan}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
+})
+
+client.on('anonsubgift',(channel, streakMonths, recipient, methods, tags)=>{
+    let str = `anonsubgift: ${streakMonths}, ${recipient}, ${methods.plan}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
+})
+
+client.on('anonsubmysterygift',(channel, giftSubCount, methods, tags)=>{
+    let str = `anonsubmysterygift: ${giftSubCount}, ${methods.plan}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
+})
+
+client.on('primepaidupgrade',(channel, username, methods, tags)=>{
+    let str = `primepaidupgrade: ${username}, ${methods.plan}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
+})
+
+client.on('giftpaidupgrade',(channel, username, sender, tags)=>{
+    let str = `giftpaidupgrade: ${username}, ${sender}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
+})
+
+client.on('anongiftpaidupgrade',(channel, username, tags)=>{
+    let str = `anongiftpaidupgrade: ${username}`
+    console.log(str)
+    data.push(str)
+    fs.writeFile('./sub.json', JSON.stringify(data, null, 4), (err)=>{
+        if(err) throw err;
+    })
 })
