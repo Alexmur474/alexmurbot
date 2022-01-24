@@ -232,7 +232,7 @@ client.on('message', (channel, tags, message, self) => {
         console.log(tags['user-id'])
     }
 }) 
-
+/*
 client.on('subscription',(channel, username, methods, message, tags) => {
     let str = `subscription: ${username}, ${methods.plan}, ${message}`
     console.log(str)
@@ -313,3 +313,4 @@ client.on('anongiftpaidupgrade',(channel, username, tags)=>{
         if(err) throw err;
     })
 })
+*/
