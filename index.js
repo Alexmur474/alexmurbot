@@ -6,7 +6,7 @@ const fs = require('fs')
 const { declOfNum } = require('./my_modules/declOfNum');
 
 const cmds = require('./json/cmd.json')
-const counter = require('./json/counter.json')
+const counter = require('./json/counter.json');
 
 //____________________________________________
 
@@ -62,13 +62,8 @@ client.on('message', (channel,tags,message,self)=>{
 
 client.on('message', (channel, tags, message, self) => {
     if (self || !message.startsWith('!')) return;
-
     const command = message.toLowerCase().slice(1);
-    for (i = 0; i < cmds.length; ++i) {
-        if(cmds[i].name == command && command != 'test'){   
-            client.say(channel, cmds[i].value)
-        }
-    }
+    try{client.say(channel, cmds.filter(elem => elem.name == command)[0].value)}catch{}
 })
 
 client.on('message', (channel, tags, message, self) => {
@@ -93,11 +88,7 @@ client.on('message', (channel, tags, message, self) => {
 client.on('message', (channel, tags, message, self) => {
     if (self || !message.startsWith('!')) return;
     if(message === '!команды'){
-        let arr = []
-        for (i = 0; i < cmds.length; ++i) {
-            if(cmds[i].name != 'test'){arr.push(cmds[i].name)}
-        }
-        client.say(channel, 'Список доступных команд: ' + arr.join(', '))
+        client.say(channel, 'Список доступных команд: ' + cmds.map(x => x.name).join(', '))
     }
 })
 
@@ -195,8 +186,7 @@ client.on('message', (channel, tags, message, self) => {
                         } else {
                             eloRes = `Ранг: ${elo2} ${lp} LP ${win}W/${lose}L`
                             client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes} ——————————————————————`);
-                        }
-                        
+                        }  
                     })
                 }
             })
@@ -228,7 +218,8 @@ client.on('message', (channel, tags, message, self) => {
     if (message.startsWith("!test")) {
         console.log(tags['user-id'])
     }
-}) 
+})
+
 /*
 client.on('subscription',(channel, username, methods, message, tags) => {
     let str = `subscription: ${username}, ${methods.plan}, ${message}`
