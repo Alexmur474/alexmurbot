@@ -65,7 +65,7 @@ client.on('message', (channel, tags, message, self) => {
 
     const command = message.toLowerCase().slice(1);
     for (i = 0; i < cmds.length; ++i) {
-        if(cmds[i].name == command){   
+        if(cmds[i].name == command && command != 'test'){   
             client.say(channel, cmds[i].value)
         }
     }
@@ -93,7 +93,6 @@ client.on('message', (channel, tags, message, self) => {
 client.on('message', (channel, tags, message, self) => {
     if (self || !message.startsWith('!')) return;
     if(message === '!команды'){
-        const command = message.toLowerCase().slice(1);
         let arr = []
         for (i = 0; i < cmds.length; ++i) {
             if(cmds[i].name != 'test'){arr.push(cmds[i].name)}
@@ -177,12 +176,12 @@ client.on('message', (channel, tags, message, self) => {
                 let eloRes = ''
                 if (elo2.startsWith("Мастер") || elo2.startsWith("Претендент") || elo2.startsWith("Грандмастер")) {
                     eloRes =`Ранг: ${elo2} ${win}W/${lose}L`;
-                    client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes} ——————————————————————`);
+                    client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes}`);
                 } else {
                     axios.get(url2).then(data => {
                         let a = $(selectorLp).text().replace(/\s+/g, ' ').trim()
                         eloRes = `Ранг: ${elo2} ${a} LP ${win}W/${lose}L`
-                        client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes} ——————————————————————`);
+                        client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes}`);
                     })
                 }
             })
