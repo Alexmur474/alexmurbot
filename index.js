@@ -5,8 +5,8 @@ const fs = require('fs')
 
 const { declOfNum } = require('./my_modules/declOfNum');
 
-const cmds = require('./json/cmd.json')
-const counter = require('./json/counter.json');
+const cmds = require('./json/commands.json')
+const counter = require('./json/counters.json');
 
 //____________________________________________
 
@@ -47,12 +47,12 @@ client.on('message', (channel,tags,message,self)=>{
             let arr = message.split(" ");
             let name = arr[1].toLowerCase();
             let value = arr.slice(2).join(" ");
-            let newcmd = {
+            let newCmd = {
                 "name": name,
                 "value": value
             }
-            cmds.push(newcmd)
-            fs.writeFile('./json/cmd.json', JSON.stringify(cmds, null, 2), (err)=>{
+            cmds.push(newCmd)
+            fs.writeFile('./json/commands.json', JSON.stringify(cmds, null, 2), (err)=>{
                     if(err) throw err;
                     client.say(channel, `Команда !${name} добавлена`)
             })
@@ -75,7 +75,7 @@ client.on('message', (channel, tags, message, self) => {
             for (i = 0; i < cmds.length; ++i) {
                 if(cmds[i].name == name){   
                     removeItemOnce(cmds, cmds[i])
-                    fs.writeFile('./json/cmd.json', JSON.stringify(cmds, null, 2), (err)=>{
+                    fs.writeFile('./json/commands.json', JSON.stringify(cmds, null, 2), (err)=>{
                         if(err) throw err;
                         client.say(channel, `Команда !${name} удалена`)
                     })
@@ -107,10 +107,9 @@ client.on('message', (channel, tags, message, self) => {
         for (i = 0; i < counter.length; ++i) {
             if(counter[i].name == command){
                 counter[i].value+=1
-                fs.writeFile('./json/counter.json', JSON.stringify(counter, null, 2), (err)=>{
+                fs.writeFile('./json/counters.json', JSON.stringify(counter, null, 2), (err)=>{
                     if(err) throw err;
                 })
-
                 switch (command) {
                     case 'телега':
                         client.say(channel, `Димил пропустил ${counter[i].value} ${declOfNum(counter[i].value, ['телегу', 'телеги', 'телег'])}. Список телег пополнился еще одной.`);
