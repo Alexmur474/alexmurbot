@@ -153,7 +153,7 @@ let url2 = 'https://www.leagueofgraphs.com/ru/summoner/euw/RESET%20MMR%20DIMIL'
 
 client.on('message', (channel, tags, message, self) => {
     if (self) return;
-    if (message === '!ранг') {
+    if (message === '!ранг' || message === '!лп' || message === '!lp') {
         axios.get(url1).then(data => {
             const $ = cheerio.load(data.data)
             let elo1 = $(selectorRang).text().replace(/\s+/g, ' ').trim();
@@ -165,7 +165,14 @@ client.on('message', (channel, tags, message, self) => {
             } else {
                 axios.get(url1).then(data => {
                     let a = $(selectorLp).text().replace(/\s+/g, ' ').trim()
-                    eloDimil = `Ранг: ${elo1} ${a} LP ${win}W/${lose}L`
+                    if(a == '100'){
+                        axios.get(url2).then(data => {
+                            let promo = $('.miniserie').text().replace(/\s+/g, ' ').trim()
+                            eloDimil = `Ранг: ${elo1} ${lp} LP ${win}W/${lose}L Промо: ${promo}`
+                        })
+                    } else {
+                        eloDimil = `Ранг: ${elo1} ${a} LP ${win}W/${lose}L`
+                    }
                 })
             }
             axios.get(url2).then(data => {
@@ -180,14 +187,22 @@ client.on('message', (channel, tags, message, self) => {
                 } else {
                     axios.get(url2).then(data => {
                         let a = $(selectorLp).text().replace(/\s+/g, ' ').trim()
-                        eloRes = `Ранг: ${elo2} ${a} LP ${win}W/${lose}L`
-                        client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes}`);
+                        if(a == '100'){
+                            axios.get(url2).then(data => {
+                                let promo = $('.miniserie').text().replace(/\s+/g, ' ').trim()
+                                eloRes = `Ранг: ${elo2} ${lp} LP ${win}W/${lose}L Промо: ${promo}`
+                            })
+                        } else {
+                            eloRes = `Ранг: ${elo2} ${a} LP ${win}W/${lose}L`
+                            client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes}`);
+                        }
+                        
                     })
                 }
             })
-        });
+        })
     }
-});
+})
 
 let selectorTftRang = '#profile > div > div:nth-child(2) > div.row.row-normal.mt-3 > div.col-lg-4 > div.profile__tier > div.profile__tier__info > div.profile__tier__summary > span.profile__tier__summary__tier.text-gold'
 let selectorTftLp = '#profile > div > div:nth-child(2) > div.row.row-normal.mt-3 > div.col-lg-4 > div.profile__tier > div.profile__tier__info > div.profile__tier__summary > span.profile__tier__summary__lp'
@@ -202,9 +217,9 @@ client.on('message', (channel, tags, message, self) => {
             let gm = $(selectorTftLp).text().replace(/\s+/g, ' ').trim();
 
             client.say(channel, `Ранг тфт: ${chall} ${gm}`);
-        });
+        })
     }
-});
+})
 
 //____________________________________________
 
