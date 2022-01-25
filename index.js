@@ -164,14 +164,14 @@ client.on('message', (channel, tags, message, self) => {
                 eloDimil = `Ранг: ${elo1} ${win}W/${lose}L`;
             } else {
                 axios.get(url1).then(data => {
-                    let a = $(selectorLp).text().replace(/\s+/g, ' ').trim()
-                    if(a == '100'){
+                    let lp = $(selectorLp).text().replace(/\s+/g, ' ').trim()
+                    if(lp == '100'){
                         axios.get(url2).then(data => {
                             let promo = $('.miniserie').text().replace(/\s+/g, ' ').trim()
                             eloDimil = `Ранг: ${elo1} ${lp} LP ${win}W/${lose}L Промо: ${promo}`
                         })
                     } else {
-                        eloDimil = `Ранг: ${elo1} ${a} LP ${win}W/${lose}L`
+                        eloDimil = `Ранг: ${elo1} ${lp} LP ${win}W/${lose}L`
                     }
                 })
             }
@@ -186,14 +186,14 @@ client.on('message', (channel, tags, message, self) => {
                     client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes} ——————————————————————`);
                 } else {
                     axios.get(url2).then(data => {
-                        let a = $(selectorLp).text().replace(/\s+/g, ' ').trim()
-                        if(a == '100'){
+                        let lp = $(selectorLp).text().replace(/\s+/g, ' ').trim()
+                        if(lp == '100'){
                             axios.get(url2).then(data => {
                                 let promo = $('.miniserie').text().replace(/\s+/g, ' ').trim()
                                 eloRes = `Ранг: ${elo2} ${lp} LP ${win}W/${lose}L Промо: ${promo}`
                             })
                         } else {
-                            eloRes = `Ранг: ${elo2} ${a} LP ${win}W/${lose}L`
+                            eloRes = `Ранг: ${elo2} ${lp} LP ${win}W/${lose}L`
                             client.say(channel, `—————————————————————— Dimil Q -> ${eloDimil} —————————————————————— RESET MMR DIMIL-> ${eloRes} ——————————————————————`);
                         }
                         
