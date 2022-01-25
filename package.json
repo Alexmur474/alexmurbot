@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "nodemon --ignore json/"
   },
   "keywords": [],
   "author": "",
@@ -14,10 +13,8 @@
     "axios": "^0.24.0",
     "cheerio": "^1.0.0-rc.10",
     "chokidar": "^3.5.2",
-    "express": "^4.17.2",
     "jshint": "^2.13.3",
     "moment": "^2.29.1",
-    "mongoose": "^6.1.6",
     "tmi": "^0.2.2",
     "tmi.js": "^1.8.5"
   },

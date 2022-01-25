@@ -1,12 +1,12 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const tmi = require("tmi.js");
+const fs = require('fs')
 
 const { declOfNum } = require('./my_modules/declOfNum');
 
-require('./src/db/mongoose')
-const Counter = require('./src/models/counters')
-const Command = require('./src/models/command');
+const cmds = require('./json/cmd.json')
+const counter = require('./json/counter.json')
 
 //____________________________________________
 
@@ -32,93 +32,79 @@ client.connect();
 
 //____________________________________________
 
-//?add command
-client.on('message', (channel, tags, message, self) => {
-    if (self) return;
-    if (message.startsWith("!add")) {
-        if (tags.username == 'alexey__murzin') {
-            let arr = message.split(" ");
-            let name = arr[1];
-            let value = arr.slice(2).join(" ");
-
-            Command.findOne({command: name},(err, data) => {
-                if(err){console.log(err)}
-                if(data){
-                    Command.updateOne({command: name}, {value: value}, (err,data)=> {
-                        if(err) console.log(err);
-                        client.say(channel, `Команда !${name} успешно обновлена`)
-                    })
-                }else{
-                    Command.create({command: name, value: value},function(err, doc){
-                        if(err) return console.log(err);
-                        client.say(channel, `Команда !${name} успешно добавлена`)
-                    })
-                }
-            }) 
-        }
+function removeItemOnce(arr, value) {
+    var index = arr.indexOf(value);
+    if (index > -1) {
+      arr.splice(index, 1);
     }
-})
+    return arr;
+}
 
-//? del command
-client.on('message', (channel, tags, message, self) => {
+client.on('message', (channel,tags,message,self)=>{
     if (self) return;
-    if (message.startsWith("!del")) {
-        if (tags.username == 'alexey__murzin') {
+    if (message.startsWith('!add')){
+        if (tags.username == 'alexey__murzin'){
             let arr = message.split(" ");
-            let name = arr.splice(1).join(" ");
-
-            Command.findOne({command: name},(err, data) => {
-                if(err){console.log(err)}
-
-                if(data){
-                    Command.deleteOne({command:name}, function(err, result){
-                        if(err) return console.log(err);
-                        if(result){client.say(channel, `Команда !${name} успешно удалена`)}
-                    })
-                }else client.say(channel, `Команда !${name} не найдена`) 
+            let name = arr[1].toLowerCase();
+            let value = arr.slice(2).join(" ");
+            let newcmd = {
+                "name": name,
+                "value": value
+            }
+            cmds.push(newcmd)
+            fs.writeFile('./json/cmd.json', JSON.stringify(cmds, null, 2), (err)=>{
+                    if(err) throw err;
+                    client.say(channel, `Команда !${name} добавлена`)
             })
         }
     }
 })
 
-//? read command
 client.on('message', (channel, tags, message, self) => {
     if (self || !message.startsWith('!')) return;
 
     const command = message.toLowerCase().slice(1);
-    Command.findOne({command: command},(err, data) => {
-        if(err){console.log(err)}
-
-        if(data){
-            client.say(channel, data.value) 
+    for (i = 0; i < cmds.length; ++i) {
+        if(cmds[i].name == command){   
+            client.say(channel, cmds[i].value)
         }
-    }) 
-});
+    }
+})
 
-//? command list
-const arr = []
 client.on('message', (channel, tags, message, self) => {
-    if (self) return;
-
-    if (message == "!команды") {
-        Counter.find({}).exec(function(err, data) {
-            for (i = 0; i< data.length; i++){
-                arr.push(data[i].counter)
-            }
-            Command.find({}).exec(function(err, data) {
-                for (i = 0; i< data.length; i++){
-                    arr.push(data[i].command)
+    if (self || !message.startsWith('!')) return;
+    if (message.startsWith('!del')){
+        if (tags.username == 'alexey__murzin'){
+            let arr = message.split(" ");
+            let name = arr[1].toLowerCase();
+            for (i = 0; i < cmds.length; ++i) {
+                if(cmds[i].name == name){   
+                    removeItemOnce(cmds, cmds[i])
+                    fs.writeFile('./json/cmd.json', JSON.stringify(cmds, null, 2), (err)=>{
+                        if(err) throw err;
+                        client.say(channel, `Команда !${name} удалена`)
+                    })
                 }
-                client.say(channel, "command list: " + arr.join(", "))
-            })
-        })
+            }
+        }
+    }
+})
+
+client.on('message', (channel, tags, message, self) => {
+    if (self || !message.startsWith('!')) return;
+    if(message === '!команды'){
+        const command = message.toLowerCase().slice(1);
+        let arr = []
+        for (i = 0; i < cmds.length; ++i) {
+            if(cmds[i].name != 'test'){arr.push(cmds[i].name)}
+        }
+        client.say(channel, 'Список доступных команд: ' + arr.join(', '))
     }
 })
 
 //____________________________________________
 
 //?counters
-var anyVal = 0
 let cooldown = false;
 
 client.on('message', (channel, tags, message, self) => {
@@ -128,34 +114,31 @@ client.on('message', (channel, tags, message, self) => {
     const command = args.shift().toLowerCase();
 
     if (!cooldown) {
-        Counter.findOne({counter: command},(err, data) => {
-          
-        if(data){
-            anyVal = data.value + 1
+        for (i = 0; i < counter.length; ++i) {
+            if(counter[i].name == command){
+                counter[i].value+=1
+                fs.writeFile('./json/counter.json', JSON.stringify(counter, null, 2), (err)=>{
+                    if(err) throw err;
+                })
 
-            switch (command) {
-                case 'телега':
-                    client.say(channel, `Димил пропустил ${anyVal} ${declOfNum(anyVal, ['телегу', 'телеги', 'телег'])}. Список телег пополнился еще одной.`);
-                    break;
-                case 'сейчасприду':
-                    client.say(channel, `Димил оставил чат в одиночестве: ${anyVal} ${declOfNum(anyVal, ['раз', 'раза', 'раз'])}. sadCat `);
-                    break;
-                case 'банан':
-                    client.say(channel, `Димил сьел на стриме ${anyVal} ${declOfNum(anyVal, ['банан', 'банана', 'бананов'])} :banana: `);
-                    break;
-                default:
-                    break;
-            }
-        }
-        if(err){console.log(err)}
-            Counter.updateOne({counter: command}, {value: anyVal}, (err,data)=> {
-                if(err) console.log(err);
-            })
-        });
-
-        cooldown = true;
-        setTimeout(() => { cooldown = false }, 20 * 1000);  
+                switch (command) {
+                    case 'телега':
+                        client.say(channel, `Димил пропустил ${counter[i].value} ${declOfNum(counter[i].value, ['телегу', 'телеги', 'телег'])}. Список телег пополнился еще одной.`);
+                        break;
+                    case 'сейчасприду':
+                        client.say(channel, `Димил оставил чат в одиночестве: ${counter[i].value} ${declOfNum(counter[i].value, ['раз', 'раза', 'раз'])}. sadCat `);
+                        break;
+                    case 'банан':
+                        client.say(channel, `Димил сьел на стриме ${counter[i].value} ${declOfNum(counter[i].value, ['банан', 'банана', 'бананов'])} :banana: `);
+                        break;
+                    default:
+                        break;
+                } 
+            } 
+        }    
     }
+    cooldown = true;
+    setTimeout(() => { cooldown = false }, 20 * 1000);  
 })
 
 //____________________________________________
