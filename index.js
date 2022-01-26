@@ -34,9 +34,7 @@ client.connect();
 
 function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);
-    if (index > -1) {
-      arr.splice(index, 1);
-    }
+    if (index > -1) arr.splice(index, 1);
     return arr;
 }
 
@@ -53,8 +51,8 @@ client.on('message', (channel,tags,message,self)=>{
             }
             cmds.push(newCmd)
             fs.writeFile('./json/commands.json', JSON.stringify(cmds, null, 2), (err)=>{
-                    if(err) throw err;
-                    client.say(channel, `Команда !${name} добавлена`)
+                if(err) throw err;
+                client.say(channel, `Команда !${name} добавлена`)
             })
         }
     }
@@ -204,7 +202,6 @@ client.on('message', (channel, tags, message, self) => {
             const $ = cheerio.load(data.data)
             let chall = $(selectorTftRang).text().replace(/\s+/g, ' ').trim();
             let gm = $(selectorTftLp).text().replace(/\s+/g, ' ').trim();
-
             client.say(channel, `Ранг тфт: ${chall} ${gm}`);
         })
     }
@@ -215,10 +212,8 @@ client.on('message', (channel, tags, message, self) => {
 client.on('message', (channel, tags, message, self) => {
     if (self) return;
     if (message.startsWith("!test")) {
-        console.log(tags['user-id'])
     }
 })
-
 /*
 client.on('subscription',(channel, username, methods, message, tags) => {
     let str = `subscription: ${username}, ${methods.plan}, ${message}`
