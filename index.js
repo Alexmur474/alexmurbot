@@ -37,6 +37,7 @@ cron.schedule('10 * * * *', () => {
     rs[0].restart = 1
     fs.writeFile('./rs.json', JSON.stringify(rs, null, 2), (err)=>{
         if(err) throw err;
+        console.log('BOT RESTARTED')
     })
 });
 
