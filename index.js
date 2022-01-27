@@ -1,13 +1,14 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const tmi = require("tmi.js");
-const fs = require('fs')
+const fs = require('fs');
+var cron = require('node-cron');
 
 const { declOfNum } = require('./my_modules/declOfNum');
 
 const cmds = require('./json/commands.json')
 const counter = require('./json/counters.json');
-
+const rs = require('./rs.json')
 //____________________________________________
 
 var channel = 'dimill'
@@ -31,6 +32,16 @@ var client = new tmi.client(config)
 client.connect();
 
 //____________________________________________
+
+cron.schedule('10 * * * *', () => {
+    rs[0].restart = 1
+    fs.writeFile('./rs.json', JSON.stringify(rs, null, 2), (err)=>{
+        if(err) throw err;
+    })
+});
+
+//____________________________________________
+
 
 function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);
