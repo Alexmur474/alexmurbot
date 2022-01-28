@@ -33,7 +33,7 @@ client.connect();
 
 //____________________________________________
 
-cron.schedule('10 * * * *', () => {
+cron.schedule('0 * * * *', () => {
     rs[0].restart = 1
     fs.writeFile('./rs.json', JSON.stringify(rs, null, 2), (err)=>{
         if(err) throw err;
