@@ -87,7 +87,7 @@ client.on('message', (channel,tags,message,self)=>{
 client.on('message', (channel, tags, message, self) => {
     if (self || !message.startsWith('!')) return;
     const command = message.toLowerCase().slice(1);
-    try{client.say(channel, cmds.filter(elem => elem.name == command)[0].value)}catch{}
+    try{client.say(channel, cmds.filter(elem => elem.name == command)[0].value)}catch(error){console.log(error)}
 })
 
 client.on('message', (channel, tags, message, self) => {
