@@ -33,16 +33,31 @@ client.connect();
 
 //____________________________________________
 
+//?bot restart
 cron.schedule('0 * * * *', () => {
     rs[0].restart = 1
     fs.writeFile('./rs.json', JSON.stringify(rs, null, 2), (err)=>{
         if(err) throw err;
-        console.log('BOT RESTARTED')
+        console.log('BOT RESTARTIND')
     })
 });
 
+client.on('message', (channel, tags, message, self) => {
+    if (self || !message.startsWith('!')) return;
+    if(message === '!rs'){
+            if(tags.username == 'alexey__murzin'){
+            client.say(channel, 'bot restarting')
+            fs.writeFile('./rs.json', JSON.stringify(rs, null, 2), (err)=>{
+                if(err) throw err;
+                console.log('BOT RESTARTING')
+            })
+        }
+    }
+})
+
 //____________________________________________
 
+//?commands
 function removeItemOnce(arr, value) {
     var index = arr.indexOf(value);
     if (index > -1) arr.splice(index, 1);
