@@ -23,7 +23,7 @@ var config = {
     },
     identity: {
         username: 'alexmur_bot',
-        password: "oauth:o8m3ko4t09tvs9jsxr1vi2yyi82vbc"
+        password: "oauth:jk2zq9c6nroi2v0kd0hukytyydvlvf"
     },
     channels: [channel]
 }
