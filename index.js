@@ -1,3 +1,4 @@
+require('dotenv').config()
 const axios = require('axios');
 const cheerio = require('cheerio');
 const tmi = require("tmi.js");
@@ -11,8 +12,6 @@ const counter = require('./json/counters.json');
 const rs = require('./rs.json')
 //____________________________________________
 
-var channel = 'dimill'
-
 var config = {
     options: {
         debug: true
@@ -22,10 +21,10 @@ var config = {
         reconnect: true
     },
     identity: {
-        username: 'alexmur_bot',
-        password: "oauth:jk2zq9c6nroi2v0kd0hukytyydvlvf"
+        username: process.env.BOT_NAME,
+        password: process.env.OAUTH
     },
-    channels: [channel]
+    channels: [process.env.CHANNEL]
 }
 
 var client = new tmi.client(config)
