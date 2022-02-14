@@ -1,4 +1,4 @@
-[
+[  
   {
     "name": "сейчасприду",
     "value": ""
@@ -24,6 +24,10 @@
     "value": "https://www.instagram.com/dimill322/"
   },
   {
+    "name": "дискорд",
+    "value": "https://discord.gg/9p5CVqF"
+  },
+  {
     "name": "очки",
     "value": " https://clips.twitch.tv/FastDeterminedEggDansGame-YVwC_GjPlg1T4cTM"
   },
@@ -33,10 +37,14 @@
   },
   {
     "name": "команда",
-    "value": "Состав CrowCrowd LCL 22 : top: T1moha | jng: antik | mid: bmj | adc: Demonadc | sup: Dimill. Старт LCL 12 февраля. Анонс: https://vk.cc/cai6mU"
+    "value": "Состав CrowCrowd LCL22 : top: T1moha | jng: antik | mid: bmj | adc: Demonadc | sup: Dimill. Аккаунты и эло: https://lolpros.gg/multi/crowcrowd !расписание - расписание матчей"
   },
   {
-    "name": "дискорд",
-    "value": "https://discord.gg/9p5CVqF"
+  "name": "сетка",
+  "value": ""
+  },
+  {
+    "name": "расписание",
+    "value": " https://escorenews.com/ru/lol/lcl-2022-spring —————————————————————— vs_UOL(12.02_lose) vs_BSG(13.02_lose) vs_TS(19.02_18.00) vs_DA(20.02_18.00) vs_OBG(26.02_18.00) vs_VEG(27.02_16.00) vs_CTRL(05.03_16.00)"
   }
 ]
